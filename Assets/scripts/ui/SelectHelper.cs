@@ -4,14 +4,20 @@ using System.Linq;
 using System.Text;
 using Assets.scripts.core;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.scripts.ui
 {
-    public class SelectHelper : MonoBehaviour
+    public class SelectHelper : MonoBehaviour, DialogListener
     {
         public GameObject selected, selected2;
         public SpriteRenderer renderer1, renderer2;
         public GameObject selectedUnit;
+        public GameObject okCancelDialog;
+
+        private AutoTile selectedTile;
+
+
         void Start()
         {
             selected = GameObject.Find("selected");
@@ -22,7 +28,7 @@ namespace Assets.scripts.ui
 
         void Update()
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && okCancelDialog.activeInHierarchy == false)
             {
                 Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 RaycastHit2D hit = Physics2D.Raycast(pos, Vector2.zero);
@@ -59,16 +65,28 @@ namespace Assets.scripts.ui
             {
                 renderer1.enabled = true;
                 tile.attach(selected);
+                this.selectedTile = tile;
                 //유닛 설치에 관한 다이얼로그 표시
                 //TODO : 다이얼로그 만들고 이 클래스에 인터페이스를 추가하는식으로 이어줘야 한다
-                Listen(tile);
+                OKCancelDialog dialog = okCancelDialog.GetComponent<OKCancelDialog>();
+
+                dialog.SetDialogListener(this);
+                okCancelDialog.SetActive(true);
+                Text text = okCancelDialog.transform.Find("Message").GetComponent<Text>();
+                text.text = "이 곳에 해당 유닛을 위치시키겠습니까?";
             }
         }
 
-        public void Listen(AutoTile tile)
+        public void OnOK()
         {
             GameObject obj = Instantiate(selectedUnit, this.transform);
-            tile.attach(obj);
+            this.selectedTile.attach(obj);
+            renderer2.enabled = false;
+            renderer1.enabled = false;
+        }
+
+        public void OnCancel()
+        {
             renderer2.enabled = false;
             renderer1.enabled = false;
         }
