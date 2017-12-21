@@ -22,12 +22,14 @@ namespace Assets.scripts.ui
             this.x = x;
             this.y = y;
         }
+
         public void attach(GameObject selected)
         {
             Vector3 temp = this.transform.localPosition;
             temp.z = -2;
             selected.transform.localPosition = temp;
         }
+
         public bool isInArea()
         {
             return y >= 0 && y < 5;

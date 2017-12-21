@@ -2,61 +2,44 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Assets.scripts.core.unit;
+using System.Xml.Linq;
+using UnityEngine;
 
 namespace Assets.scripts.core
 {
-    public class UnitManager
+    public class UnitManager : MonoBehaviour
     {
-        private LinkedList<Unit> topUnits = new LinkedList<Unit>();
-        private LinkedList<Unit> bottomUnits = new LinkedList<Unit>();
-        //자원등에 대해선 이미 만족했다는 가정하에 일을 처리한다.
-        //그러므로 이 함수를 호출하기전에 자원들을 확인할 필요가 있다
-        public void build(Unit unit)
+        private XElement balanceData;
+        public void Awake()
         {
-            RegionKind region = unit.Region;
-            if (region == RegionKind.Top)
-            {
-                topUnits.AddLast(unit);
-            }
-            else if(region == RegionKind.Bottom)
-            {
-                bottomUnits.AddLast(unit);
-            }
-        }
+            //밸런스 데이터를 불러온다.
+            balanceData = XElement.Load("assets/datas/data.xml");
 
+            //prototype은 일종의 디폴트값을 의미함. 
+            XElement prototype = balanceData.Element("prototype");
 
-        public void Update()
-        {
-            //1. 이동유닛은 앞으로 전진을 한다
-            //2. 이동유닛이 건물과 충돌할 시, 건물과 이동유닛은 사라진다
-            //3. 이동유닛이 끝에 닿을 경우 상대 진영에 데미지를 입힌다 => RegionManager를 만들어 거기서 처리하는게 좋을 것 같다
-
-            //1. 이동유닛은 앞으로 전진을 한다
-            for (int i = 0; i < topUnits.Count; i++)
+            //모든 밸런스를 돌면서 prototype의 속성들중 유닛에 존재하지 않는 것을 찾아 대입을 시켜준다.
+            foreach(var e in balanceData.Elements("unit"))
             {
-                topUnits.ElementAt(i).Update();
-            }
-            for (int i = 0; i < bottomUnits.Count; i++)
-            {
-                bottomUnits.ElementAt(i).Update();
-            }
-
-            //2. 이동유닛이 건물과 충돌할 시, 건물과 이동유닛은 사라진다
-            for (int i = 0; i < topUnits.Count; i++)
-            {
-                for(int j = 0; j < bottomUnits.Count; j++)
+                foreach(var p in prototype.Elements())
                 {
-                    Unit top = topUnits.ElementAt(i);
-                    Unit bottom = bottomUnits.ElementAt(j);
-                    if(top.Collide(bottom))
+                    XElement temp = e.Element(p.Name);
+                    //prototype엔 존재하는데, unit 데이터엔 존재하지 않는 경우
+                    if (e.Element(p.Name) == null)
                     {
-                        topUnits.Remove(top);
-                        bottomUnits.Remove(bottom);
+                        e.Add(p);
                     }
                 }
-            }
+            } 
         }
 
+        public XElement getElement(int id)
+        {
+            //Linq쿼리로 찾는다. 그냥 foreach로 찾는것보단 빠르지 않을까?
+            var result = from xe in balanceData.Elements("unit")
+                         where xe.Element("id").Value == id + ""
+                         select xe;
+            return result.First();
+        }
     }
 }

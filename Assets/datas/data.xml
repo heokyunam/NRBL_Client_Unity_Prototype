@@ -1,0 +1,33 @@
+﻿<units>
+  
+  <prototype>
+    <move>0</move>
+    <coin>0</coin>
+    <price>0</price>
+  </prototype>
+
+  <unit>
+    <name>plant</name>
+    <id>0</id>
+    <coin>1</coin>
+    <power>1</power>
+    <price>1</price>
+  </unit>
+  
+  <unit>
+    <name>soldier</name>
+    <id>1</id>
+    <move>1</move>
+    <power>1</power>
+    <price>1</price>
+  </unit>
+
+  <unit>
+    <name>house</name>
+    <id>3</id>
+    <maxhuman>1</maxhuman>
+    <power>2</power>
+    <price>2</price>
+  </unit>
+  
+</units>

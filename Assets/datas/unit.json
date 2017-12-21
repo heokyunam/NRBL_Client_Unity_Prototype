@@ -1,0 +1,30 @@
+﻿[
+  {
+    "type": "prototype",
+    "move": 0,
+    "coin": 0,
+    "price" : "error"
+  },
+  {
+    "type": "data",
+    "name": "soldier",
+    "id": 1,
+    "move": 1,
+    "power": 1,
+    "price" : 1
+  },
+  {
+    "type": "data",
+    "name": "plant",
+    "coin": 1,
+    "power": 1,
+    "price" :  1
+  },
+  {
+    "type": "data",
+    "name": "house",
+    "maxhuman": 1,
+    "power": 2,
+    "price": 2
+  }
+]
