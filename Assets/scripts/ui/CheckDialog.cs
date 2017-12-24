@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public interface DialogListener
+public interface CheckListener
 {
-    void OnOK();
-    void OnCancel();
+    void OnCheck();
 }
-public class OKCancelDialog : MonoBehaviour {
-    private DialogListener oklistener;
-	// Use this for initialization
-	void Start () {
+public class CheckDialog : MonoBehaviour
+{
+    private CheckListener listener;
+    // Use this for initialization
+    void Start()
+    {
         Color color = this.GetComponent<Image>().color;
         color.a = 0.5f;
         this.GetComponent<Image>().color = color;
@@ -20,23 +21,17 @@ public class OKCancelDialog : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
 
-    public void SetDialogListener(DialogListener listener)
-    {
-        this.oklistener = listener;
     }
 
-    public void OnOK()
+    public void SetCheckListener(CheckListener listener)
     {
-        this.oklistener.OnOK();
-        this.gameObject.SetActive(false);
+        this.listener = listener;
     }
 
-    public void OnCancel()
+    public void OnCheck()
     {
-        this.oklistener.OnCancel();
+        this.listener.OnCheck();
         this.gameObject.SetActive(false);
     }
 

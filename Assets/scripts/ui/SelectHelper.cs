@@ -8,12 +8,12 @@ using UnityEngine.UI;
 
 namespace Assets.scripts.ui
 {
-    public class SelectHelper : MonoBehaviour, DialogListener
+    public class SelectHelper : MonoBehaviour, DialogListener, CheckListener
     {
         public GameObject selected, selected2;
         public SpriteRenderer renderer1, renderer2;
         public GameObject selectedUnit;
-        public GameObject okCancelDialog;
+        public GameObject okCancelDialog, okDialog;
 
         private AutoTile selectedTile;
 
@@ -28,7 +28,7 @@ namespace Assets.scripts.ui
 
         void Update()
         {
-            if (Input.GetMouseButtonDown(0) && okCancelDialog.activeInHierarchy == false)
+            if (Input.GetMouseButtonDown(0) && isDialogActive() == false)
             {
                 Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 RaycastHit2D hit = Physics2D.Raycast(pos, Vector2.zero);
@@ -53,6 +53,11 @@ namespace Assets.scripts.ui
             }
         }
 
+        public bool isDialogActive()
+        {
+            return okCancelDialog.activeInHierarchy || okDialog.activeInHierarchy;
+        }
+
         public void SelectPallette(Unit unit)
         {
             renderer2.enabled = true;
@@ -72,17 +77,45 @@ namespace Assets.scripts.ui
 
                 dialog.SetDialogListener(this);
                 okCancelDialog.SetActive(true);
-                Text text = okCancelDialog.transform.Find("Message").GetComponent<Text>();
-                text.text = "이 곳에 해당 유닛을 위치시키겠습니까?";
+                dialog.SetText("이 곳에 해당 유닛을 위치시키겠습니까?");
+
             }
+        }
+
+        public void OnCheck()
+        {
+            renderer2.enabled = false;
+            renderer1.enabled = false;
         }
 
         public void OnOK()
         {
-            GameObject obj = Instantiate(selectedUnit, this.transform);
-            this.selectedTile.attach(obj);
-            renderer2.enabled = false;
-            renderer1.enabled = false;
+            Player player = GameObject.Find("Player").GetComponent<Player>();
+
+            if(player.IsMyTurn == false)
+            {
+                CheckDialog dialog = okDialog.GetComponent<CheckDialog>();
+                dialog.SetCheckListener(this);
+
+                okDialog.SetActive(true);
+                dialog.SetText("턴을 이미 소모했습니다.\n상대방에게 턴을 넘겨주세요");
+            }
+            else if(player.checkEnoughCoin(selectedUnit))
+            {
+                GameObject obj = Instantiate(selectedUnit, this.transform);
+                this.selectedTile.attach(obj);
+                renderer2.enabled = false;
+                renderer1.enabled = false;
+                player.IsMyTurn = false;
+            }
+            else
+            {
+                CheckDialog dialog = okDialog.GetComponent<CheckDialog>();
+                dialog.SetCheckListener(this);
+
+                okDialog.SetActive(true);
+                dialog.SetText("금액이 부족합니다. 현재 코인 : " + player.Coin);
+            }
         }
 
         public void OnCancel()
