@@ -15,15 +15,23 @@ namespace Assets.scripts.ui
         public GameObject selectedUnit;
         public GameObject okCancelDialog, okDialog;
 
+        private Player player;
         private AutoTile selectedTile;
-
 
         void Start()
         {
             selected = GameObject.Find("selected");
             selected2 = GameObject.Find("selected2");
+            okCancelDialog = GameObject.Find("OKCancelDialog");
+            okDialog = GameObject.Find("OKDialog");
+
+            okCancelDialog.SetActive(false);
+            okDialog.SetActive(false);
+
             renderer1 = selected.GetComponent<SpriteRenderer>();
             renderer2 = selected2.GetComponent<SpriteRenderer>();
+
+            player = GameObject.Find("Player").GetComponent<Player>();
         }
 
         void Update()
@@ -32,6 +40,7 @@ namespace Assets.scripts.ui
             {
                 Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 RaycastHit2D hit = Physics2D.Raycast(pos, Vector2.zero);
+                //Unit Touch or AutoTile Touch
                 if (hit.collider != null)
                 {
                     //1. 유닛 팔레트에선 Unit이 있는 오브젝트일 것임
@@ -42,12 +51,18 @@ namespace Assets.scripts.ui
 
                     if(unit != null)
                     {
-                        SelectPallette(unit);
-                        selectedUnit = gameObject;
+                        if(gameObject.tag == "pallette")
+                        {
+                            SelectPallette(unit);
+                            selectedUnit = gameObject;
+                        }
                     }
-                    else
+                    else if(tile != null)
                     {
-                        SelectAutoTile(tile);
+                        if(gameObject.tag == "placable")
+                        {
+                            SelectAutoTile(tile);
+                        }
                     }
                 }
             }
@@ -78,7 +93,6 @@ namespace Assets.scripts.ui
                 dialog.SetDialogListener(this);
                 okCancelDialog.SetActive(true);
                 dialog.SetText("이 곳에 해당 유닛을 위치시키겠습니까?");
-
             }
         }
 
@@ -90,10 +104,9 @@ namespace Assets.scripts.ui
 
         public void OnOK()
         {
-            Player player = GameObject.Find("Player").GetComponent<Player>();
-
             if(player.IsMyTurn == false)
             {
+                //턴을 소모시
                 CheckDialog dialog = okDialog.GetComponent<CheckDialog>();
                 dialog.SetCheckListener(this);
 
@@ -102,14 +115,26 @@ namespace Assets.scripts.ui
             }
             else if(player.checkEnoughCoin(selectedUnit))
             {
-                GameObject obj = Instantiate(selectedUnit, this.transform);
-                this.selectedTile.attach(obj);
+                //충분한 금액이 있음. 설치 가능
+                GameObject obj = Instantiate(selectedUnit, player.transform);
+                //Debug.Log(selectedTile.name);
+                //this.selectedTile.attach(obj);
+                //Debug.Log(obj.transform.localPosition);
+
+                Unit unit = obj.GetComponent<Unit>();
+                player.AddUnit(unit);
+                unit.SetPosition(this.selectedTile.X, this.selectedTile.Y);
+                unit.attach();
+
+                obj.tag = "created";
+
                 renderer2.enabled = false;
                 renderer1.enabled = false;
                 player.IsMyTurn = false;
             }
             else
             {
+                //금액 부족. 설치 불가
                 CheckDialog dialog = okDialog.GetComponent<CheckDialog>();
                 dialog.SetCheckListener(this);
 

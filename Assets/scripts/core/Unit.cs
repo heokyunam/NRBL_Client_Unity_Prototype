@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using UnityEngine;
+using Assets.scripts.ui;
 
 namespace Assets.scripts.core
 {
     public class Unit : MonoBehaviour
     {
-        public GameObject unitPallette;
+        public GameObject unitPallette, autoMapper;
         public int id;
         public XElement balance;
         public int x, y;
@@ -16,6 +17,7 @@ namespace Assets.scripts.core
         void Start()
         {
             this.unitPallette = GameObject.Find("UnitPallette");
+            this.autoMapper = GameObject.Find("AutoMapper");
             this.balance = unitPallette.GetComponent<UnitManager>().getElement(id);
         }
 
@@ -28,8 +30,34 @@ namespace Assets.scripts.core
 
         public void UpdateEveryTurn()
         {
+            if(Move > 0)
+            {
+                this.y += 1;
+                attach();    
+            }
+            if(Coin > 0)
+            {
+                Player player = GameObject.Find("Player").GetComponent<Player>();
+                player.Coin += Coin;
+                Debug.Log(player.Coin);
+            }
+        }
 
-
+        public void attach()
+        {
+            string name = "autotile(" + this.x + "," + this.y + ")";
+            GameObject goAutoTile = this.autoMapper.transform.Find(name).gameObject;
+            if(goAutoTile == null)
+            {
+                throw new CannotFindComponentException(name + "을 찾지못함");
+            }
+            Debug.Log(name);
+            AutoTile tile = goAutoTile.GetComponent<AutoTile>();
+            if (tile == null)
+            {
+                throw new CannotFindComponentException(name + " AutoTile 을 찾지못함");
+            }
+            tile.attach(this.gameObject);
         }
 
         public void attach(GameObject selected)

@@ -57,6 +57,10 @@ namespace Assets.scripts.ui
                     obj.transform.Translate(new Vector3(i - 2f, j - MapParser.Y_NUM / 2));
                     obj.GetComponent<AutoTile>().move(i, j-2);
                     obj.name = "autotile(" + i + "," + (j-2) + ")";
+                    if (j >= 2 && j <= 4)
+                        obj.tag = "placable";
+                    else
+                        obj.tag = "unplacable";
                 }
             }
         }

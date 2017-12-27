@@ -6,10 +6,11 @@ namespace Assets.scripts.core
 {
     public class Player : MonoBehaviour
     {
+        private LinkedList<Unit> units;
         public int coin;
         public bool isMyTurn;
 
-        public int Coin { get { return coin; } }
+        public int Coin { get { return coin; } set { coin = value; } }
         public bool IsMyTurn { get { return isMyTurn; } set { isMyTurn = value; } }
         
         // Use this for initialization
@@ -17,12 +18,24 @@ namespace Assets.scripts.core
         {
             coin = 1;
             isMyTurn = true;
+            units = new LinkedList<Unit>();
         }
 
         // Update is called once per frame
         void Update()
         {
 
+        }
+
+        public void UpdateEveryTurn()
+        {
+            IEnumerator<Unit> it = units.GetEnumerator();
+            while(it.MoveNext())
+            {
+                Unit unit = it.Current;
+                unit.UpdateEveryTurn();
+                Debug.Log(unit.name);
+            }
         }
 
         //알아서 삭제되니 주의해야함
@@ -37,6 +50,16 @@ namespace Assets.scripts.core
             bool returnVal = coin >= unit.Price;
             if(returnVal) coin -= unit.Price;
             return returnVal;
+        }
+
+        public void AddUnit(Unit unit)
+        {
+            if (unit == null)
+            {
+                throw new CannotFindComponentException(
+                    "게임오브젝트에 유닛 스크립트가 할당되어 있지 않음");
+            }
+            units.AddLast(unit);
         }
     }
 }

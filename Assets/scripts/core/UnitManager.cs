@@ -24,7 +24,7 @@ namespace Assets.scripts.core
                 foreach(var p in prototype.Elements())
                 {
                     XElement temp = e.Element(p.Name);
-                    //prototype엔 존재하는데, unit 데이터엔 존재하지 않는 경우
+                    //prototype엔 존재하는데, un it 데이터엔 존재하지 않는 경우
                     if (e.Element(p.Name) == null)
                     {
                         e.Add(p);

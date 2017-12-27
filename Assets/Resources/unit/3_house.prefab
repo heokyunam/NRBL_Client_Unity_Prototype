@@ -79,7 +79,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitPallette: {fileID: 0}
-  id: 0
+  autoMapper: {fileID: 0}
+  id: 3
   x: 0
   y: 0
 --- !u!212 &212578562145918326
