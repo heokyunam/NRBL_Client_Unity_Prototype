@@ -11,7 +11,6 @@ namespace Assets.scripts.ui
     public class SelectHelper : MonoBehaviour, DialogListener, CheckListener
     {
         public GameObject selected, selected2;
-        public SpriteRenderer renderer1, renderer2;
         public GameObject selectedUnit;
         public GameObject okCancelDialog, okDialog;
 
@@ -20,18 +19,16 @@ namespace Assets.scripts.ui
 
         void Start()
         {
-            selected = GameObject.Find("selected");
-            selected2 = GameObject.Find("selected2");
+            GameObject goPlayer = GameObject.Find("Player");
+            selected = goPlayer.transform.Find("selected").gameObject;
+            selected2 = goPlayer.transform.Find("selected2").gameObject;
             okCancelDialog = GameObject.Find("OKCancelDialog");
             okDialog = GameObject.Find("OKDialog");
 
             okCancelDialog.SetActive(false);
             okDialog.SetActive(false);
 
-            renderer1 = selected.GetComponent<SpriteRenderer>();
-            renderer2 = selected2.GetComponent<SpriteRenderer>();
-
-            player = GameObject.Find("Player").GetComponent<Player>();
+            player = goPlayer.GetComponent<Player>();
         }
 
         void Update()
@@ -48,8 +45,8 @@ namespace Assets.scripts.ui
                     GameObject gameObject = hit.collider.gameObject;
                     Unit unit = gameObject.GetComponent<Unit>();
                     AutoTile tile = gameObject.GetComponent<AutoTile>();
-
-                    if(unit != null)
+                    
+                    if (unit != null)
                     {
                         if(gameObject.tag == "pallette")
                         {
@@ -75,15 +72,15 @@ namespace Assets.scripts.ui
 
         public void SelectPallette(Unit unit)
         {
-            renderer2.enabled = true;
+            selected2.SetActive(true);
             unit.attach(selected2);
         }
 
         public void SelectAutoTile(AutoTile tile)
         {
-            if(renderer2.enabled)
+            if(selected2.activeInHierarchy)
             {
-                renderer1.enabled = true;
+                selected.SetActive(true);
                 tile.attach(selected);
                 this.selectedTile = tile;
                 //유닛 설치에 관한 다이얼로그 표시
@@ -98,8 +95,8 @@ namespace Assets.scripts.ui
 
         public void OnCheck()
         {
-            renderer2.enabled = false;
-            renderer1.enabled = false;
+            selected.SetActive(false);
+            selected2.SetActive(false);
         }
 
         public void OnOK()
@@ -122,14 +119,16 @@ namespace Assets.scripts.ui
                 //Debug.Log(obj.transform.localPosition);
 
                 Unit unit = obj.GetComponent<Unit>();
-                player.AddUnit(unit);
+                player.UnitGroup.AddUnit(unit);
+                //새로 만들어낸 Unit객체에는 새로운 x,y정보가 포함되어 있지 않음
                 unit.SetPosition(this.selectedTile.X, this.selectedTile.Y);
+                //오토타일에서 해당 값을 찾아 반영해주는 방식임
                 unit.attach();
 
                 obj.tag = "created";
 
-                renderer2.enabled = false;
-                renderer1.enabled = false;
+                selected.SetActive(false);
+                selected2.SetActive(false);
                 player.IsMyTurn = false;
             }
             else
@@ -145,8 +144,8 @@ namespace Assets.scripts.ui
 
         public void OnCancel()
         {
-            renderer2.enabled = false;
-            renderer1.enabled = false;
+            selected.SetActive(false);
+            selected2.SetActive(false); 
         }
     }
 }

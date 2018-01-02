@@ -16,6 +16,11 @@ public class OKCancelDialog : MonoBehaviour {
         color.a = 0.5f;
         this.GetComponent<Image>().color = color;
 
+        Button yes = this.transform.Find("YesButton").GetComponent<Button>();
+        Button no = this.transform.Find("NoButton").GetComponent<Button>();
+
+        yes.onClick.AddListener(OnOK);
+        no.onClick.AddListener(OnCancel);
     }
 	
 	// Update is called once per frame

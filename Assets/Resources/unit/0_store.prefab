@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 61650663772828166}
   m_Layer: 0
   m_Name: 0_store
-  m_TagString: Untagged
+  m_TagString: pallette
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -79,6 +79,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitPallette: {fileID: 0}
+  autoMapper: {fileID: 0}
   id: 0
   x: 0
   y: 0

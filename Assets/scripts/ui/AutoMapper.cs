@@ -36,12 +36,13 @@ namespace Assets.scripts.ui
 
         void Start()
         {
-            this.selected = GameObject.Find("selected");
+            GameObject player = GameObject.Find("Player");
+
+            this.selected = player.transform.Find("selected").gameObject;
             this.selected.transform.localScale = new Vector3(1 / 1.25f, 1 / 1.25f);
-            this.selected.GetComponent<SpriteRenderer>().enabled = false;
-            this.selected2 = GameObject.Find("selected2");
+
+            this.selected2 = player.transform.Find("selected2").gameObject;
             this.selected2.transform.localScale = new Vector3(1 / 1.25f, 1 / 1.25f);
-            this.selected2.GetComponent<SpriteRenderer>().enabled = false;
         }
 
         void MakeTile()
@@ -57,7 +58,7 @@ namespace Assets.scripts.ui
                     obj.transform.Translate(new Vector3(i - 2f, j - MapParser.Y_NUM / 2));
                     obj.GetComponent<AutoTile>().move(i, j-2);
                     obj.name = "autotile(" + i + "," + (j-2) + ")";
-                    if (j >= 2 && j <= 4)
+                    if (j >= 2 && j < 4)
                         obj.tag = "placable";
                     else
                         obj.tag = "unplacable";

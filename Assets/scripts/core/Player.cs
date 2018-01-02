@@ -6,7 +6,8 @@ namespace Assets.scripts.core
 {
     public class Player : MonoBehaviour
     {
-        private LinkedList<Unit> units;
+        private UnitGroup unitGroup = new UnitGroup();
+        public Enemy enemy;
         public int coin;
         public bool isMyTurn;
 
@@ -14,11 +15,11 @@ namespace Assets.scripts.core
         public bool IsMyTurn { get { return isMyTurn; } set { isMyTurn = value; } }
         
         // Use this for initialization
-        void Start()
+        void Awake()
         {
             coin = 1;
             isMyTurn = true;
-            units = new LinkedList<Unit>();
+            this.enemy = transform.root.Find("Enemy").GetComponent<Enemy>();
         }
 
         // Update is called once per frame
@@ -27,15 +28,10 @@ namespace Assets.scripts.core
 
         }
 
-        public void UpdateEveryTurn()
+        public void NextTurn()
         {
-            IEnumerator<Unit> it = units.GetEnumerator();
-            while(it.MoveNext())
-            {
-                Unit unit = it.Current;
-                unit.UpdateEveryTurn();
-                Debug.Log(unit.name);
-            }
+            //Debug.Log("Player NextTurn");
+            enemy.GiveTurn();
         }
 
         //알아서 삭제되니 주의해야함
@@ -44,7 +40,8 @@ namespace Assets.scripts.core
             Unit unit = palletteUnit.GetComponent<Unit>();
             if(unit == null)
             {
-                throw new CannotFindComponentException("checkEnoughCoin 매개변수에서 Unit이 아닌 게임오브젝트 발견");
+                throw new CannotFindComponentException(
+                    "checkEnoughCoin 매개변수에서 Unit이 아닌 게임오브젝트 발견");
             }
             
             bool returnVal = coin >= unit.Price;
@@ -52,14 +49,20 @@ namespace Assets.scripts.core
             return returnVal;
         }
 
-        public void AddUnit(Unit unit)
+        public IEnumerator<Unit> Units
         {
-            if (unit == null)
+            get
             {
-                throw new CannotFindComponentException(
-                    "게임오브젝트에 유닛 스크립트가 할당되어 있지 않음");
+                return unitGroup.GetEnumerator();
             }
-            units.AddLast(unit);
+        }
+
+        public UnitGroup UnitGroup
+        {
+            get
+            {
+                return unitGroup;
+            }
         }
     }
 }

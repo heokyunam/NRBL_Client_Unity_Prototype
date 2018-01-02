@@ -11,7 +11,7 @@ namespace Assets.scripts.ui
         public GameObject[] units;
         void Awake()
         {
-            units = Resources.LoadAll<GameObject>("unit");
+            units = Resources.LoadAll<GameObject>("unit/blue");
             for(int i = 0; i < units.Length; i++)
             {
                 Sprite sprite = units[i].GetComponent<SpriteRenderer>().sprite;

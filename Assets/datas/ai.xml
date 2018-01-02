@@ -1,0 +1,79 @@
+﻿<aisteps>
+
+  <!-- build a plant for getting a gold -->
+  <step>
+    <id>0</id>
+    <turn>0</turn>
+    <type>unit</type>
+
+    <unit>0</unit>
+    <x>0</x>
+    <y>4</y>
+    <!-- plant 0 0 0 0 -->
+  </step>
+  
+  <step>
+    <id>1</id>
+    <turn>0</turn>
+    <type>turn</type>
+  </step>
+
+  <!-- train a soldier for a fight-->
+  <step>
+    <id>2</id>
+    <turn>1</turn>
+    <type>unit</type>
+
+    <unit>1</unit>
+    <x>1</x>
+    <y>4</y>
+    <!-- plant soldier 0 0 0 -->
+  </step>
+
+  <step>
+    <id>3</id>
+    <turn>1</turn>
+    <type>turn</type>
+  </step>
+
+  <!-- build a new plant -->
+
+  <step>
+    <id>4</id>
+    <turn>2</turn>
+    <type>unit</type>
+
+    <unit>0</unit>
+    <x>2</x>
+    <y>4</y>
+    <!-- plant 0 plant 0 0 -->
+  </step>
+
+  <step>
+    <id>5</id>
+    <turn>2</turn>
+    <type>turn</type>
+  </step>
+
+  <!-- build a house -->
+
+  <step>
+    <id>6</id>
+    <turn>3</turn>
+    <type>unit</type>
+
+    <unit>0</unit>
+    <x>2</x>
+    <y>4</y>
+    <!-- plant 0 plant 0 0 -->
+  </step>
+
+  <step>
+    <id>7</id>
+    <turn>0</turn>
+    <type>turn</type>
+  </step> 
+  
+  
+  
+</aisteps>

@@ -17,6 +17,8 @@ public class CheckDialog : MonoBehaviour
         color.a = 0.5f;
         this.GetComponent<Image>().color = color;
 
+        Button btn = this.transform.Find("YesButton").GetComponent<Button>();
+        btn.onClick.AddListener(OnCheck);
     }
 	
 	// Update is called once per frame
