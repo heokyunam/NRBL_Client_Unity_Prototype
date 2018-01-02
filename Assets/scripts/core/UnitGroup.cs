@@ -26,13 +26,36 @@ namespace Assets.scripts.core
             units.AddLast(unit);
         }
 
-        public void UpdateEveryTurn()
+        public void UpdateEveryTurn(UnitGroup enemy)
         {
             IEnumerator<Unit> it = units.GetEnumerator();
             while (it.MoveNext())
             {
                 Unit unit = it.Current;
                 unit.UpdateEveryTurn();
+            }
+
+            CollisionCheck(enemy);
+        }
+
+        public void CollisionCheck(UnitGroup enemy)
+        {
+            for(int i = 0; i < units.Count; i++)
+            {
+                for(int j = 0; j < enemy.units.Count; j++)
+                {
+                    Unit p = units.ElementAt(i);
+                    Unit e = enemy.units.ElementAt(j);
+
+                    if(p.isCollide(e))
+                    {
+                        //now we test this
+                        p.Destroy();
+                        e.Destroy();
+                        units.Remove(p);
+                        enemy.units.Remove(e);
+                    }
+                }
             }
         }
 

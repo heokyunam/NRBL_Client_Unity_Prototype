@@ -68,7 +68,6 @@ namespace Assets.scripts.core
             {
                 Player player = GameObject.Find("Player").GetComponent<Player>();
                 player.Coin += Coin;
-                //Debug.Log(player.Coin);
             }
         }
 
@@ -94,6 +93,16 @@ namespace Assets.scripts.core
             Vector3 temp = this.transform.localPosition;
             temp.z = -2;
             selected.transform.localPosition = temp;
+        }
+
+        public bool isCollide(Unit unit)
+        {
+            return (this.x == unit.x && this.y == unit.y);
+        }
+
+        public void Destroy()
+        {            
+            Destroy(this.gameObject);
         }
 
         public int Price { get { return getIntValue("price");  } }

@@ -70,7 +70,7 @@ namespace Assets.scripts.ui
         public void OnCheck()
         {
             //모든 유닛들이 다음턴을 넘길때 시행하는 이벤트들을 처리
-            player.UnitGroup.UpdateEveryTurn();
+
             player.NextTurn();
         }
 

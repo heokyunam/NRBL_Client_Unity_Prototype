@@ -61,7 +61,7 @@ namespace Assets.scripts.core
 
         public void NextTurn()
         {
-            unitGroup.UpdateEveryTurn();
+            unitGroup.UpdateEveryTurn(player.UnitGroup);
             //Debug.Log("NextTurn : " + turn);
             turn++;
             player.IsMyTurn = true;

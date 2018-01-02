@@ -30,7 +30,7 @@ namespace Assets.scripts.core
 
         public void NextTurn()
         {
-            //Debug.Log("Player NextTurn");
+            UnitGroup.UpdateEveryTurn(enemy.UnitGroup);
             enemy.GiveTurn();
         }
 
