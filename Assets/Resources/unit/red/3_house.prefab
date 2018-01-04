@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4826720417216044}
   - component: {fileID: 212430129515121826}
   - component: {fileID: 114267565540615504}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: 3_house
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52,12 +52,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57d6032c712c4e041a24d790149668c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitPallette: {fileID: 0}
-  autoMapper: {fileID: 0}
-  id: 3
-  balanceForTest: 
-  x: 0
-  y: 0
 --- !u!212 &212430129515121826
 SpriteRenderer:
   m_ObjectHideFlags: 1

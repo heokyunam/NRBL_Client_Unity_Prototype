@@ -9,16 +9,19 @@ namespace Assets.scripts.core
 {
     public class Unit : MonoBehaviour
     {
-        public GameObject unitPallette, autoMapper;
-        public int id;
-        public XElement balance;
-        public string balanceForTest;
-        public int x, y;
-        public bool isEnemy = false;
+        private GameObject unitPallette, autoMapper;
+        private int id;
+        private XElement balance;
+        private string balanceForTest;
+        private int x, y;
+        private bool isEnemy = false;
         
         public bool IsEnemy { get { return isEnemy; } set { isEnemy = value; } }
+        public int Id { get { return id; } set { this.id = value; } }
+        public int X { get { return x; } }
+        public int Y { get { return y; } }
         // Use this for initialization
-        void Start()
+        void Awake()
         {
             this.Init();
         }
@@ -33,6 +36,7 @@ namespace Assets.scripts.core
             this.unitPallette = GameObject.Find("UnitPallette");
             this.autoMapper = GameObject.Find("AutoMapper");
             this.balance = unitPallette.GetComponent<UnitManager>().getElement(id);
+            this.id = id;
             if (this.balance == null)
                 throw new CannotFindComponentException("Unit 생성시 Balance 데이터에 접근이 안됨");
         }
@@ -52,9 +56,9 @@ namespace Assets.scripts.core
 
         public void UpdateEveryTurn()
         {
-            if(Move > 0)
+            if (Move > 0)
             {
-                if(isEnemy)
+                if(IsEnemy)
                 {
                     this.y -= Move;
                 }
@@ -64,10 +68,18 @@ namespace Assets.scripts.core
                 }
                 attach();    
             }
-            if(Coin > 0 && this.IsEnemy == false)
+            if(Coin > 0)
             {
-                Player player = GameObject.Find("Player").GetComponent<Player>();
-                player.Coin += this.Coin;//like a plant, for giving coins
+                if(this.IsEnemy == false)
+                {
+                    Player player = GameObject.Find("Player").GetComponent<Player>();
+                    player.Coin += this.Coin;//like a plant, for giving coins
+                }
+                else
+                {
+                    Enemy enemy = GameObject.Find("Enemy").GetComponent<Enemy>();
+                    enemy.Coin += this.Coin;
+                }
             }
         }
 

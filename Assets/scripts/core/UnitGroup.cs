@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Assets.scripts.core
 {
@@ -23,6 +24,7 @@ namespace Assets.scripts.core
                     "게임오브젝트에 유닛 스크립트가 할당되어 있지 않음");
             }
 
+            //Debug.Log("AddUnit " + unit.Id);
             units.AddLast(unit);
         }
 
@@ -81,6 +83,17 @@ namespace Assets.scripts.core
             }
 
             return sum;
+        }
+
+        public int Count(int unit)
+        {
+            int count = 0;
+            for(int i = 0; i < units.Count; i++)
+            {
+                Unit u = units.ElementAt(i);
+                if (u.Id == unit) count++;
+            }
+            return count;
         }
 
         public IEnumerator<Unit> GetEnumerator()

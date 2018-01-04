@@ -1,15 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 using System.Xml.Linq;
 using Assets.scripts.core;
 using UnityEngine;
 
 public class OrderParser : MonoBehaviour {
     public Enemy enemy;
+    private AIMaker ai;
     void Awake()
     {
         this.enemy = GetComponent<Enemy>();
+        this.ai = new AIMaker(enemy);
     }
 
     //return value : can move next
@@ -22,7 +25,6 @@ public class OrderParser : MonoBehaviour {
             int x = int.Parse(element.Element("x").Value);
             int y = int.Parse(element.Element("y").Value);
             int unit_type = int.Parse(element.Element("unit").Value);
-
 
             enemy.AddUnit(unit_type, x, y);
 
@@ -41,11 +43,19 @@ public class OrderParser : MonoBehaviour {
 
     public void GiveAITurn()
     {
+        /*
         XElement root = XElement.Load("assets/datas/ai2.xml");
         IEnumerable<XElement> result = from xe in root.Elements("step")
                                        where xe.Element("turn").Value == enemy.Turn + ""
                                        select xe;
         foreach (XElement xe in result)
+        {
+            if (order(xe) == false)
+                break;
+        }
+        */
+        XElement result = ai.Judge();
+        foreach (XElement xe in result.Elements())
         {
             if (order(xe) == false)
                 break;
@@ -68,4 +78,4 @@ public class OrderParser : MonoBehaviour {
 	void Update () {
 		
 	}*/
-}
+    }

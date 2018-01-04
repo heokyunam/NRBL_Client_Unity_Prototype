@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Assets.scripts.core;
 using UnityEngine;
 
 namespace Assets.scripts.ui
@@ -35,6 +36,10 @@ namespace Assets.scripts.ui
                 GameObject obj = Instantiate(units[i], this.transform);
                 obj.transform.Translate(new Vector3(x + i, y - 1));
                 obj.name = "pallette" + i;
+
+                Unit unit = obj.GetComponent<Unit>();
+                if(unit != null)
+                    unit.Id = i;
             }
         }
     }

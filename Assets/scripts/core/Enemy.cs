@@ -51,9 +51,6 @@ namespace Assets.scripts.core
                     unit.Init();
             }
             Hp = 5;
-
-            AIMaker am = new AIMaker();
-            am.write();
         }
 
         // Update is called once per frame
@@ -66,10 +63,11 @@ namespace Assets.scripts.core
         {
             GameObject obj = Instantiate<GameObject>(this.pallette[unit_type], this.transform);
             Unit unit = obj.GetComponent<Unit>();
-            this.unitGroup.AddUnit(unit);
-
             unit.IsEnemy = true;
             unit.Init(unit_type, x, y);
+            this.unitGroup.AddUnit(unit);
+            this.Coin -= unit.Price;
+
             unit.attach();
         }
 
@@ -88,7 +86,7 @@ namespace Assets.scripts.core
             this.goCheckDialog.SetActive(true);
             this.checkDialog.SetCheckListener(this);
             this.checkDialog.SetText("상대방이 턴을 당신에게로 넘겼습니다.");
-            Debug.Log("NextTurn : " + this.goCheckDialog.activeInHierarchy);
+            //Debug.Log("NextTurn : " + this.goCheckDialog.activeInHierarchy);
         }
 
         public void OnCheck()

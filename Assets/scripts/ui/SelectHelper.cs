@@ -119,10 +119,13 @@ namespace Assets.scripts.ui
                 //Debug.Log(obj.transform.localPosition);
 
                 Unit unit = obj.GetComponent<Unit>();
+
                 player.UnitGroup.AddUnit(unit);
                 //새로 만들어낸 Unit객체에는 새로운 x,y정보가 포함되어 있지 않음
-                unit.SetPosition(this.selectedTile.X, this.selectedTile.Y);
+                unit.Init(selectedUnit.GetComponent<Unit>().Id, 
+                    this.selectedTile.X, this.selectedTile.Y);
                 //오토타일에서 해당 값을 찾아 반영해주는 방식임
+                //Debug.Log("Unit.Id : " + unit.Id + "/" + selectedUnit.GetComponent<Unit>().Id);
                 unit.attach();
 
                 obj.tag = "created";

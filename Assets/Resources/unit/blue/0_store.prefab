@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212664708512072652}
   - component: {fileID: 61581549912814282}
   - component: {fileID: 114914984983645012}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: 0_store
   m_TagString: pallette
   m_Icon: {fileID: 0}
@@ -78,12 +78,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57d6032c712c4e041a24d790149668c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitPallette: {fileID: 0}
-  autoMapper: {fileID: 0}
-  id: 0
-  balanceForTest: 
-  x: 0
-  y: 0
 --- !u!212 &212664708512072652
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -3,45 +3,86 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using UnityEngine;
 
 namespace Assets.scripts.core
 {
     public class AIMaker
     {
-        private XElement elements = new XElement("aisteps");
-        private int id = 0, turn = 0;
+        private Enemy enemy;
 
-        public void write()
+        public AIMaker(Enemy enemy)
         {
-            makeUnitAndNT(0, 0, 4);
-            makeUnitAndNT(1, 1, 4);
-            makeUnitAndNT(0, 2, 4);
-            makeUnitAndNT(3, 4, 4);
-
-            for(int i = 0; i < 10; i++)
-            {
-                makeUnitAndNT(1, 3, 4);
-                makeUnitAndNT(1, 1, 4);
-            }
-             
-            elements.Save("Assets/datas/ai2.xml");
+            this.enemy = enemy;
         }
 
-        public void makeUnitAndNT(int unit, int x, int y)
+        public int BlankX()
         {
+            int[] map = new int[5];
+            foreach(Unit unit in enemy.UnitGroup)
+            {
+                if(unit.Y == 4)
+                {
+                    map[unit.X] = -1;
+                }
+            }
+            
+            for(int i = 0; i < map.Length; i++)
+            {
+                if(map[i] != -1)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        public XElement Judge()
+        {
+            int blank = BlankX();
+            if(blank == -1)
+            {
+                XElement xe = new XElement("aisteps");
+                xe.Add(makeTurn());
+                return xe;
+            }
+
+            enemy.Coin += enemy.UnitGroup.Count(0);
+            Debug.Log("Enemy.Coin : " + enemy.Coin);
+            //Debug.Log("Judge : " + enemy.UnitGroup.Count(1) + "/" + enemy.UnitGroup.Count(3));
+            //집의 개수 * 2가 최대 수용량. 이보다 병사개수가 적으면 만들 수 있다
+            if (enemy.Coin >= 1 && enemy.UnitGroup.Count(1) <= enemy.UnitGroup.Count(3) * 2) 
+            {
+                return makeUnitAndNT(1, blank, 4);
+            }
+            else if(enemy.Coin == 0)
+            {
+                return makeUnitAndNT(0, blank, 4);
+            }
+            else
+            {
+                return makeUnitAndNT(3, blank, 4);
+            }
+        }
+
+        public XElement makeUnitAndNT(int unit, int x, int y)
+        {
+            XElement elements = new XElement("aisteps");
             elements.Add(makeUnit(unit, x, y));
             elements.Add(makeTurn());
+            return elements;
         }
 
         public XElement makeUnit(int unit, int x, int y)
         {
             XElement xe = new XElement("step");
-            xe.Add(makeData("id", id + ""));
-            id++;
+            //xe.Add(makeData("id", id + ""));
+            //id++;
             xe.Add(makeData("unit", unit + ""));
             xe.Add(makeData("x", x + ""));
             xe.Add(makeData("y", y + ""));
-            xe.Add(makeData("turn", turn + ""));
+            //xe.Add(makeData("turn", turn + ""));
             xe.Add(makeData("type", "unit"));
 
             return xe;
@@ -50,11 +91,11 @@ namespace Assets.scripts.core
         public XElement makeTurn()
         {
             XElement xe = new XElement("step");
-            xe.Add(makeData("id", id + ""));
-            id++;
-            xe.Add(makeData("turn", turn + ""));
+            //xe.Add(makeData("id", id + ""));
+            //id++;
+            //xe.Add(makeData("turn", turn + ""));
             xe.Add(makeData("type", "turn"));
-            turn++;
+            //turn++;
             return xe;
         }
 

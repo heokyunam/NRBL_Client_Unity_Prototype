@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212493749158455268}
   - component: {fileID: 114355311143981944}
   - component: {fileID: 61280918404824982}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: 1_Soldier
   m_TagString: pallette
   m_Icon: {fileID: 0}
@@ -78,11 +78,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57d6032c712c4e041a24d790149668c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitPallette: {fileID: 0}
-  autoMapper: {fileID: 0}
-  id: 1
-  x: 0
-  y: 0
 --- !u!212 &212493749158455268
 SpriteRenderer:
   m_ObjectHideFlags: 1
