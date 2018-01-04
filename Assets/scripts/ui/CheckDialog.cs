@@ -33,8 +33,8 @@ public class CheckDialog : MonoBehaviour
 
     public void OnCheck()
     {
-        this.listener.OnCheck();
         this.gameObject.SetActive(false);
+        this.listener.OnCheck();
     }
 
     public void SetText(string value)

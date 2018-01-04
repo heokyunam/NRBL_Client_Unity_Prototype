@@ -16,7 +16,7 @@ namespace Assets.scripts.core
         public int x, y;
         public bool isEnemy = false;
         
-        public bool IsEnemy { set { isEnemy = value; } }
+        public bool IsEnemy { get { return isEnemy; } set { isEnemy = value; } }
         // Use this for initialization
         void Start()
         {
@@ -64,10 +64,10 @@ namespace Assets.scripts.core
                 }
                 attach();    
             }
-            if(Coin > 0)
+            if(Coin > 0 && this.IsEnemy == false)
             {
                 Player player = GameObject.Find("Player").GetComponent<Player>();
-                player.Coin += Coin;
+                player.Coin += this.Coin;//like a plant, for giving coins
             }
         }
 
@@ -98,6 +98,18 @@ namespace Assets.scripts.core
         public bool isCollide(Unit unit)
         {
             return (this.x == unit.x && this.y == unit.y);
+        }
+
+        public bool isAttackCastle()
+        {
+            if (isEnemy)
+            {
+                return this.y == 0;
+            }
+            else
+            {
+                return this.y == 5;
+            }
         }
 
         public void Destroy()

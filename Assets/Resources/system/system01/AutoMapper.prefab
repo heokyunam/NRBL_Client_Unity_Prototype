@@ -54,8 +54,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selected: {fileID: 0}
   selected2: {fileID: 0}
-  renderer1: {fileID: 0}
-  renderer2: {fileID: 0}
   selectedUnit: {fileID: 0}
   okCancelDialog: {fileID: 0}
   okDialog: {fileID: 0}

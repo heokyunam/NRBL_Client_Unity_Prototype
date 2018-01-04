@@ -111,8 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f20a0c4168153bd4081dfa8e524c41ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coin: 1
-  isMyTurn: 0
+  enemy: {fileID: 0}
 --- !u!212 &212043832383923832
 SpriteRenderer:
   m_ObjectHideFlags: 1

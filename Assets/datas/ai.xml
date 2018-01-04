@@ -1,6 +1,6 @@
 ﻿<aisteps>
 
-  <!-- build a plant for getting a gold -->
+  <!-- 0/1. build a plant for getting a gold -->
   <step>
     <id>0</id>
     <turn>0</turn>
@@ -18,7 +18,7 @@
     <type>turn</type>
   </step>
 
-  <!-- train a soldier for a fight-->
+  <!-- 2/3. train a soldier for a fight-->
   <step>
     <id>2</id>
     <turn>1</turn>
@@ -36,7 +36,7 @@
     <type>turn</type>
   </step>
 
-  <!-- build a new plant -->
+  <!-- 4/5. build a new plant -->
 
   <step>
     <id>4</id>
@@ -55,25 +55,145 @@
     <type>turn</type>
   </step>
 
-  <!-- build a house -->
+  <!-- 6/7. build a house -->
 
   <step>
     <id>6</id>
     <turn>3</turn>
     <type>unit</type>
 
-    <unit>0</unit>
-    <x>2</x>
+    <unit>3</unit>
+    <x>4</x>
     <y>4</y>
-    <!-- plant 0 plant 0 0 -->
+    <!-- plant 0 plant 0 house -->
   </step>
 
   <step>
     <id>7</id>
-    <turn>0</turn>
+    <turn>3</turn>
     <type>turn</type>
   </step> 
   
+
+  <!-- ================================================================== -->
+  <!-- ================================================================== -->
   
+  <!-- 8/9 - 4. train a unit -->
+  <step>
+    <id>8</id>
+    <turn>4</turn>
+    <type>unit</type>
+
+    <unit>0</unit>
+    <x>1</x>
+    <y>4</y>
+    <!-- plant unit plant 0 house -->
+  </step>
   
+  <step>
+    <id>9</id>
+    <turn>4</turn>
+    <type>turn</type>
+  </step> 
+  
+  <!-- 10/11-5. train a unit -->
+  
+  <step>
+    <id>10</id>
+    <turn>5</turn>
+    <type>unit</type>
+
+    <unit>1</unit>
+    <x>3</x>
+    <y>4</y>
+    <!-- plant 0 plant unit house -->
+  </step>
+  
+  <step>
+    <id>11</id>
+    <turn>5</turn>
+    <type>turn</type>
+  </step> 
+  
+  <!-- ================================================================== -->
+  <!-- ================================================================== -->
+  
+  <!-- 12/13-6. train a unit -->
+  <step>
+    <id>12</id>
+    <turn>6</turn>
+    <type>unit</type>
+
+    <unit>1</unit>
+    <x>1</x>
+    <y>4</y>
+    <!-- plant unit plant 0 house -->
+  </step>
+  
+  <step>
+    <id>13</id>
+    <turn>6</turn>
+    <type>turn</type>
+  </step> 
+  
+  <!-- 14 15 7. train a unit -->
+  
+  <step>
+    <id>14</id>
+    <turn>7</turn>
+    <type>unit</type>
+
+    <unit>1</unit>
+    <x>3</x>
+    <y>4</y>
+    <!-- plant 0 plant unit house -->
+  </step>
+  
+  <step>
+    <id>15</id>
+    <turn>7</turn>
+    <type>turn</type>
+  </step> 
+
+  
+  <!-- ================================================================== -->
+  <!-- ================================================================== -->
+  
+  <!-- 16 17 8. train a unit -->
+  <step>
+    <id>16</id>
+    <turn>8</turn>
+    <type>unit</type>
+
+    <unit>1</unit>
+    <x>1</x>
+    <y>4</y>
+    <!-- plant unit plant 0 house -->
+  </step>
+  
+  <step>
+    <id>17</id>
+    <turn>8</turn>
+    <type>turn</type>
+  </step> 
+  
+  <!-- 18 19 9. train a unit -->
+  
+  <step>
+    <id>18</id>
+    <turn>9</turn>
+    <type>unit</type>
+
+    <unit>1</unit>
+    <x>3</x>
+    <y>4</y>
+    <!-- plant 0 plant unit house -->
+  </step>
+  
+  <step>
+    <id>19</id>
+    <turn>9</turn>
+    <type>turn</type>
+  </step> 
+
 </aisteps>

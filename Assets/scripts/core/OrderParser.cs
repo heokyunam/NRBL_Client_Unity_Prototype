@@ -41,7 +41,7 @@ public class OrderParser : MonoBehaviour {
 
     public void GiveAITurn()
     {
-        XElement root = XElement.Load("assets/datas/ai.xml");
+        XElement root = XElement.Load("assets/datas/ai2.xml");
         IEnumerable<XElement> result = from xe in root.Elements("step")
                                        where xe.Element("turn").Value == enemy.Turn + ""
                                        select xe;

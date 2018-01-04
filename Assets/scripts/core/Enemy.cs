@@ -2,13 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.scripts.core
 {
     public class Enemy : MonoBehaviour, CheckListener
     {
         private UnitGroup unitGroup = new UnitGroup();
-        private int turn = 0;
+        private int turn = 0, hp, coin;
         public GameObject[] pallette;
 
         private OrderParser orderParser;
@@ -16,9 +17,22 @@ namespace Assets.scripts.core
 
         private CheckDialog checkDialog;
         private GameObject goCheckDialog;
+        private Transform tfEnemyHP;
 
         public int Turn { get { return this.turn; } }
-        
+        public int Hp {
+            get { return this.hp; }
+            set {
+                this.hp = value;
+                tfEnemyHP.GetComponent<Text>().text = value + "";
+            }
+        }
+        public int Coin
+        {
+            get { return this.coin; }
+            set {  this.coin = value; }
+        }
+
         // Use this for initialization
         void Awake()
         {
@@ -27,6 +41,7 @@ namespace Assets.scripts.core
             this.player = transform.root.Find("Player").GetComponent<Player>();
             this.goCheckDialog = GameObject.Find("OKDialog");
             this.checkDialog = this.goCheckDialog.GetComponent<CheckDialog>();
+            this.tfEnemyHP = GameObject.Find("Canvas").transform.Find("EnemyHP").Find("Text");
 
             this.pallette = Resources.LoadAll<GameObject>("unit/red");
             for(int i = 0; i < this.pallette.Length; i++)
@@ -35,6 +50,10 @@ namespace Assets.scripts.core
                 if (unit != null)
                     unit.Init();
             }
+            Hp = 5;
+
+            AIMaker am = new AIMaker();
+            am.write();
         }
 
         // Update is called once per frame
@@ -62,17 +81,19 @@ namespace Assets.scripts.core
         public void NextTurn()
         {
             unitGroup.UpdateEveryTurn(player.UnitGroup);
-            //Debug.Log("NextTurn : " + turn);
+            int damage = unitGroup.AttackCastleDamage();
+            player.Hp -= damage;
+
             turn++;
-            player.IsMyTurn = true;
-            this.checkDialog.SetCheckListener(this);
             this.goCheckDialog.SetActive(true);
+            this.checkDialog.SetCheckListener(this);
             this.checkDialog.SetText("상대방이 턴을 당신에게로 넘겼습니다.");
+            Debug.Log("NextTurn : " + this.goCheckDialog.activeInHierarchy);
         }
 
         public void OnCheck()
         {
-
+            player.IsMyTurn = true;
         }
 
         public UnitGroup UnitGroup

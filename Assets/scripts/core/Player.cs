@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.scripts.core
 {
@@ -8,18 +9,36 @@ namespace Assets.scripts.core
     {
         private UnitGroup unitGroup = new UnitGroup();
         public Enemy enemy;
-        public int coin;
-        public bool isMyTurn;
+        public int coin, hp, compacity ;
+        private bool isMyTurn;
+        private Transform tfPlayerHP, tfPlayerCoin;
 
-        public int Coin { get { return coin; } set { coin = value; } }
+        public int Coin {
+            get { return coin; }
+            set
+            {
+                this.coin = value;
+                tfPlayerCoin.GetComponent<Text>().text = value + "";
+            }
+        }
         public bool IsMyTurn { get { return isMyTurn; } set { isMyTurn = value; } }
+        public int Hp {
+            get { return hp; }
+            set {
+                hp = value;
+                tfPlayerHP.GetComponent<Text>().text = value + "";
+            }
+        }
         
         // Use this for initialization
         void Awake()
         {
-            coin = 1;
             isMyTurn = true;
             this.enemy = transform.root.Find("Enemy").GetComponent<Enemy>();
+            this.tfPlayerHP = GameObject.Find("Canvas").transform.Find("PlayerHP").Find("Text");
+            this.tfPlayerCoin = GameObject.Find("Canvas").transform.Find("PlayerGold").Find("Text");
+            this.Hp = 5;
+            this.Coin = 1;
         }
 
         // Update is called once per frame
@@ -31,10 +50,13 @@ namespace Assets.scripts.core
         public void NextTurn()
         {
             UnitGroup.UpdateEveryTurn(enemy.UnitGroup);
+
+            enemy.Hp -= UnitGroup.AttackCastleDamage();
             enemy.GiveTurn();
         }
 
         //알아서 삭제되니 주의해야함
+        //코인 계산도 알아서 이루어짐
         public bool checkEnoughCoin(GameObject palletteUnit)
         {
             Unit unit = palletteUnit.GetComponent<Unit>();
@@ -44,8 +66,8 @@ namespace Assets.scripts.core
                     "checkEnoughCoin 매개변수에서 Unit이 아닌 게임오브젝트 발견");
             }
             
-            bool returnVal = coin >= unit.Price;
-            if(returnVal) coin -= unit.Price;
+            bool returnVal = this.Coin >= unit.Price;
+            if(returnVal) this.Coin -= unit.Price;
             return returnVal;
         }
 

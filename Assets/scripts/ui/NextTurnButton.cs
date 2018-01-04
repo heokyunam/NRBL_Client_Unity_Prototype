@@ -36,7 +36,7 @@ namespace Assets.scripts.ui
         {
             if(isDialogActive() == false)
             {
-                if (player.isMyTurn)
+                if (player.IsMyTurn)
                 {
                     OKCancelDialog okCancelDialog = goOkCancelDialog.GetComponent<OKCancelDialog>();
                     okCancelDialog.SetText("아직 턴을 사용하지 않았습니다.\n 그래도 넘기시겠습니까?");

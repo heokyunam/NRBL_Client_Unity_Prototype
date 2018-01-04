@@ -35,14 +35,14 @@ public class OKCancelDialog : MonoBehaviour {
 
     public void OnOK()
     {
-        this.oklistener.OnOK();
         this.gameObject.SetActive(false);
+        this.oklistener.OnOK();
     }
 
     public void OnCancel()
     {
-        this.oklistener.OnCancel();
         this.gameObject.SetActive(false);
+        this.oklistener.OnCancel();
     }
 
     public void SetText(string value)
