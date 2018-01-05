@@ -101,6 +101,7 @@ namespace Assets.scripts.ui
 
         public void OnOK()
         {
+            int reason;
             if(player.IsMyTurn == false)
             {
                 //턴을 소모시
@@ -110,7 +111,7 @@ namespace Assets.scripts.ui
                 okDialog.SetActive(true);
                 dialog.SetText("턴을 이미 소모했습니다.\n상대방에게 턴을 넘겨주세요");
             }
-            else if(player.checkEnoughCoin(selectedUnit))
+            else if(player.checkEnough(selectedUnit, out reason))
             {
                 //충분한 금액이 있음. 설치 가능
                 GameObject obj = Instantiate(selectedUnit, player.transform);
@@ -141,7 +142,14 @@ namespace Assets.scripts.ui
                 dialog.SetCheckListener(this);
 
                 okDialog.SetActive(true);
-                dialog.SetText("금액이 부족합니다. 현재 코인 : " + player.Coin);
+                if(reason == Player.REASON_COIN)
+                {
+                    dialog.SetText("금액이 부족합니다. 현재 코인 : " + player.Coin);
+                }
+                else if(reason == Player.REASON_CAPACITY)
+                {
+                    dialog.SetText("집을 건설하여 최대 수용량을 늘리세요 최대 수용량 : " + player.Capacity);
+                }
             }
         }
 

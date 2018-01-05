@@ -8,8 +8,9 @@ namespace Assets.scripts.core
     public class Player : MonoBehaviour
     {
         private UnitGroup unitGroup = new UnitGroup();
+        public static int REASON_COIN = 1, REASON_CAPACITY = 2;
         public Enemy enemy;
-        public int coin, hp, compacity ;
+        public int coin, hp, capacity;
         private bool isMyTurn;
         private Transform tfPlayerHP, tfPlayerCoin;
 
@@ -29,6 +30,7 @@ namespace Assets.scripts.core
                 tfPlayerHP.GetComponent<Text>().text = value + "";
             }
         }
+        public int Capacity { get { return capacity; } set { capacity = value; } }
         
         // Use this for initialization
         void Awake()
@@ -39,6 +41,7 @@ namespace Assets.scripts.core
             this.tfPlayerCoin = GameObject.Find("Canvas").transform.Find("PlayerGold").Find("Text");
             this.Hp = 5;
             this.Coin = 1;
+            this.Capacity = 1;
         }
 
         // Update is called once per frame
@@ -55,9 +58,11 @@ namespace Assets.scripts.core
             enemy.GiveTurn();
         }
 
-        //알아서 삭제되니 주의해야함
-        //코인 계산도 알아서 이루어짐
-        public bool checkEnoughCoin(GameObject palletteUnit)
+        
+        /**알아서 삭제되니 주의해야함
+            코인 계산도 알아서 이루어짐
+         */
+        public bool checkEnough(GameObject palletteUnit, out int reason)
         {
             Unit unit = palletteUnit.GetComponent<Unit>();
             if(unit == null)
@@ -65,11 +70,23 @@ namespace Assets.scripts.core
                 throw new CannotFindComponentException(
                     "checkEnoughCoin 매개변수에서 Unit이 아닌 게임오브젝트 발견");
             }
-            
+
+            reason = 0;
             bool returnVal = this.Coin >= unit.Price;
-            if(returnVal) this.Coin -= unit.Price;
-            return returnVal;
+            bool returnVal2 = returnVal && this.UnitGroup.Count(1) < this.Capacity;
+
+            if (!returnVal) reason = REASON_COIN;
+            else if (!returnVal2) reason = REASON_CAPACITY;
+
+            if (returnVal && returnVal2)
+            {
+                this.Coin -= unit.Price;
+            }
+
+            return returnVal && returnVal2;
         }
+
+
 
         public IEnumerator<Unit> Units
         {
