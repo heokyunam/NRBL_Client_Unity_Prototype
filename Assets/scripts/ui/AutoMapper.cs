@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace Assets.scripts.ui
@@ -11,10 +12,11 @@ namespace Assets.scripts.ui
         public GameObject[] tiles;
         public GameObject selected, selected2;
 
-        private string map_file_name = "assets/datas/map.txt";
+        private const string map_file_name = "datas/map";
         
         void Awake()
         {
+            Screen.SetResolution(600, 900, false);
             TileInit();
             MakeTile();
         }
@@ -47,7 +49,8 @@ namespace Assets.scripts.ui
 
         void MakeTile()
         {
-            MapParser parser = new MapParser(map_file_name);
+            TextAsset txt = Resources.Load<TextAsset>(map_file_name);
+            MapParser parser = new MapParser(new StringReader(txt.text));
 
             for (int i = 0; i < MapParser.X_NUM; i++)
             {

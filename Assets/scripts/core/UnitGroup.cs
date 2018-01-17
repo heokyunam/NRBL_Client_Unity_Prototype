@@ -11,21 +11,32 @@ namespace Assets.scripts.core
     public class UnitGroup
     {
         private LinkedList<Unit> units = new LinkedList<Unit>();
+        private int capacity, food;
 
         public UnitGroup()
         {
+            capacity = 1;
+            food = 0;
         }
 
-        public void AddUnit(Unit unit)
+        public bool AddUnit(Unit unit)
         {
             if (unit == null)
             {
                 throw new CannotFindComponentException(
                     "게임오브젝트에 유닛 스크립트가 할당되어 있지 않음");
             }
-
-            //Debug.Log("AddUnit " + unit.Id);
-            units.AddLast(unit);
+            this.capacity += unit.Capacity;
+            if(food + unit.Food <= this.capacity)
+            {
+                this.food += unit.Food;
+                units.AddLast(unit);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         //모든 턴별로 모든 에너미가 접근해 턴을 실행하며, 충돌 체크를 한다.
@@ -56,15 +67,20 @@ namespace Assets.scripts.core
 
                     if(p.isCollide(e))
                     {
-                        //now we test this
-                        p.Destroy();
-                        e.Destroy();
-                        units.Remove(p);
-                        enemy.units.Remove(e);
+                        Remove(p);
+                        enemy.Remove(e);
                         break;
                     }
                 }
             }
+        }
+
+        public void Remove(Unit unit)
+        {
+            unit.Destroy();
+            units.Remove(unit);
+            this.capacity -= unit.Capacity;
+            this.food -= unit.Food;
         }
 
         //내가 이동한 후에 처리를 하기 때문에 상대방에 입힐 데미지를 구한다

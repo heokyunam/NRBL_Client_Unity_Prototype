@@ -21,12 +21,12 @@ namespace Assets.scripts.ui
         {
             GameObject goPlayer = GameObject.Find("Player");
             selected = goPlayer.transform.Find("selected").gameObject;
-            selected2 = goPlayer.transform.Find("selected2").gameObject;
-            okCancelDialog = GameObject.Find("OKCancelDialog");
-            okDialog = GameObject.Find("OKDialog");
+            //selected2 = goPlayer.transform.Find("selected2").gameObject;
+            okCancelDialog = GameObject.Find("Canvas").transform.Find("OKCancelDialog").gameObject;
+            okDialog = GameObject.Find("Canvas").transform.Find("OKDialog").gameObject;
 
-            okCancelDialog.SetActive(false);
-            okDialog.SetActive(false);
+            //okCancelDialog.SetActive(false);
+            //okDialog.SetActive(false);
 
             player = goPlayer.GetComponent<Player>();
         }
@@ -101,17 +101,19 @@ namespace Assets.scripts.ui
 
         public void OnOK()
         {
-            int reason;
             if(player.IsMyTurn == false)
             {
                 //턴을 소모시
                 CheckDialog dialog = okDialog.GetComponent<CheckDialog>();
-                dialog.SetCheckListener(this);
 
-                okDialog.SetActive(true);
-                dialog.SetText("턴을 이미 소모했습니다.\n상대방에게 턴을 넘겨주세요");
+                dialog.View("턴을 이미 소모했습니다.\n상대방에게 턴을 넘겨주세요",
+                    this);
+                //dialog.SetCheckListener(this);
+
+                //okDialog.SetActive(true);
+                //dialog.SetText("턴을 이미 소모했습니다.\n상대방에게 턴을 넘겨주세요");
             }
-            else if(player.checkEnough(selectedUnit, out reason))
+            else if(player.checkEnough(selectedUnit)) //coin만 고려함
             {
                 //충분한 금액이 있음. 설치 가능
                 GameObject obj = Instantiate(selectedUnit, player.transform);
@@ -121,36 +123,42 @@ namespace Assets.scripts.ui
 
                 Unit unit = obj.GetComponent<Unit>();
 
-                player.UnitGroup.AddUnit(unit);
-                //새로 만들어낸 Unit객체에는 새로운 x,y정보가 포함되어 있지 않음
-                unit.Init(selectedUnit.GetComponent<Unit>().Id, 
-                    this.selectedTile.X, this.selectedTile.Y);
-                //오토타일에서 해당 값을 찾아 반영해주는 방식임
-                //Debug.Log("Unit.Id : " + unit.Id + "/" + selectedUnit.GetComponent<Unit>().Id);
-                unit.attach();
+                if(player.UnitGroup.AddUnit(unit))
+                {
+                    //새로 만들어낸 Unit객체에는 새로운 x,y정보가 포함되어 있지 않음
+                    unit.Init(selectedUnit.GetComponent<Unit>().Id,
+                        this.selectedTile.X, this.selectedTile.Y);
+                    //오토타일에서 해당 값을 찾아 반영해주는 방식임
+                    //Debug.Log("Unit.Id : " + unit.Id + "/" + selectedUnit.GetComponent<Unit>().Id);
+                    unit.attach();
 
-                obj.tag = "created";
+                    obj.tag = "created";
 
-                selected.SetActive(false);
-                selected2.SetActive(false);
-                player.IsMyTurn = false;
+                    selected.SetActive(false);
+                    selected2.SetActive(false);
+                    player.IsMyTurn = false;
+                }
+                else
+                {
+                    //금액 부족. 설치 불가
+                    CheckDialog dialog = okDialog.GetComponent<CheckDialog>();
+                    dialog.View("집을 건설하여 최대 수용량을 늘리세요 최대 수용량 : "
+                        + player.Capacity, this);
+                }
             }
             else
             {
                 //금액 부족. 설치 불가
                 CheckDialog dialog = okDialog.GetComponent<CheckDialog>();
-                dialog.SetCheckListener(this);
 
-                okDialog.SetActive(true);
-                if(reason == Player.REASON_COIN)
-                {
-                    dialog.SetText("금액이 부족합니다. 현재 코인 : " + player.Coin);
-                }
-                else if(reason == Player.REASON_CAPACITY)
-                {
-                    dialog.SetText("집을 건설하여 최대 수용량을 늘리세요 최대 수용량 : " + player.Capacity);
-                }
+                dialog.View("금액이 부족합니다. 현재 코인 : " + player.Coin,
+                    this);
             }
+        }
+
+        public void viewDialog()
+        {
+
         }
 
         public void OnCancel()

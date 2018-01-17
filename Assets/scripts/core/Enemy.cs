@@ -39,7 +39,7 @@ namespace Assets.scripts.core
             this.orderParser = this.GetComponent<OrderParser>();
             
             this.player = transform.root.Find("Player").GetComponent<Player>();
-            this.goCheckDialog = GameObject.Find("OKDialog");
+            this.goCheckDialog = GameObject.Find("Canvas").transform.Find("OKDialog").gameObject;
             this.checkDialog = this.goCheckDialog.GetComponent<CheckDialog>();
             this.tfEnemyHP = GameObject.Find("Canvas").transform.Find("EnemyHP").Find("Text");
 
@@ -56,7 +56,6 @@ namespace Assets.scripts.core
         // Update is called once per frame
         void Update()
         {
-
         }
 
         public void AddUnit(int unit_type, int x, int y)

@@ -133,12 +133,16 @@ namespace Assets.scripts.core
         public int Power { get { return getIntValue("power");  } }
         public int Move { get { return getIntValue("move"); } }
         public int Coin { get { return getIntValue("coin"); } }
+        public int Food { get { return getIntValue("food"); } }
+        public int Capacity { get { return getIntValue("capacity"); } }
 
         public int getIntValue(string key)
         {;
             if (this.balance == null)
                 throw new CannotFindComponentException("balance " + id + " is null");
             XElement xe = this.balance.Element(key);
+            if (xe == null)
+                Debug.Log(this.balance);
             return int.Parse(xe.Value);
         }
     }

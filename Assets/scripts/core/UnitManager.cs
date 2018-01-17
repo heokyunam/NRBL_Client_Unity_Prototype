@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using System.IO;
 using UnityEngine;
 
 namespace Assets.scripts.core
@@ -12,6 +13,7 @@ namespace Assets.scripts.core
     public class UnitManager : MonoBehaviour
     {
         private XElement balanceData;
+        private const string filename = "datas/units";
         private XElement BalanceData
         {
             get
@@ -28,7 +30,9 @@ namespace Assets.scripts.core
         public void MakeBalanceData()
         {
             //밸런스 데이터를 불러온다.
-            balanceData = XElement.Load("assets/datas/data.xml");
+            TextAsset txt = Resources.Load<TextAsset>(filename);
+            //Debug.Log(txt);
+            balanceData = XElement.Load(new StringReader(txt.text));//"assets/datas/data.xml");
 
             //prototype은 일종의 디폴트값을 의미함. 
             XElement prototype = balanceData.Element("prototype");

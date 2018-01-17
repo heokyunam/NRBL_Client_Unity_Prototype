@@ -62,7 +62,7 @@ namespace Assets.scripts.core
         /**알아서 삭제되니 주의해야함
             코인 계산도 알아서 이루어짐
          */
-        public bool checkEnough(GameObject palletteUnit, out int reason)
+        public bool checkEnough(GameObject palletteUnit)
         {
             Unit unit = palletteUnit.GetComponent<Unit>();
             if(unit == null)
@@ -70,20 +70,15 @@ namespace Assets.scripts.core
                 throw new CannotFindComponentException(
                     "checkEnoughCoin 매개변수에서 Unit이 아닌 게임오브젝트 발견");
             }
-
-            reason = 0;
+            
             bool returnVal = this.Coin >= unit.Price;
-            bool returnVal2 = returnVal && this.UnitGroup.Count(1) < this.Capacity;
-
-            if (!returnVal) reason = REASON_COIN;
-            else if (!returnVal2) reason = REASON_CAPACITY;
-
-            if (returnVal && returnVal2)
+           
+            if (returnVal)
             {
                 this.Coin -= unit.Price;
             }
 
-            return returnVal && returnVal2;
+            return returnVal;
         }
 
 

@@ -41,4 +41,11 @@ public class CheckDialog : MonoBehaviour
     {
         this.transform.Find("Message").GetComponent<Text>().text = value;
     }
+
+    public void View(string text, CheckListener listener)
+    {
+        SetCheckListener(listener);
+        gameObject.SetActive(true);
+        SetText(text);
+    }
 }

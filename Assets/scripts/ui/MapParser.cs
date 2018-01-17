@@ -18,13 +18,24 @@ namespace Assets.scripts.ui
         {
             datas = new string[Y_NUM];
             StreamReader reader = new StreamReader(filename);
-            for (int i = 0; i < Y_NUM; i++)
-                datas[Y_NUM - i - 1] = reader.ReadLine();
+            Read(reader);
+        }
+
+        public MapParser(StringReader reader)
+        {
+            datas = new string[Y_NUM];
+            Read(reader);
         }
 
         public MapParser(string[] datas)
         {
             this.datas = datas;
+        }
+
+        public void Read(TextReader reader)
+        {
+            for (int i = 0; i < Y_NUM; i++)
+                datas[Y_NUM - i - 1] = reader.ReadLine();
         }
 
         public int GetData(int x, int y)
